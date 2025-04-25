@@ -1,5 +1,6 @@
 package com.example.themisproductmanagment.dto;
 
+import com.example.themisproductmanagment.entity.User;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -16,7 +17,7 @@ public class ProductDto {
 
     Long id;
     String name;
-    String description;
     BigDecimal price;
-    UserDto user;
+    String description;
+    User user;
 }

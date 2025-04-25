@@ -1,187 +1,257 @@
-//package com.example.themisproductmanagment;
-//
-//
-//import com.example.themisproductmanagment.dto.ProductDto;
-//import com.example.themisproductmanagment.entity.Product;
-//import com.example.themisproductmanagment.exception.ProductException;
-//import com.example.themisproductmanagment.mapper.EntityMapper;
-//import com.example.themisproductmanagment.repository.ProductRepository;
-//import com.example.themisproductmanagment.service.serviceImpl.ProductServiceImpl;
-//import org.junit.jupiter.api.Test;
-//import org.junit.jupiter.api.extension.ExtendWith;
-//import org.mockito.*;
-//import org.mockito.junit.jupiter.MockitoExtension;
-//
-//import java.math.BigDecimal;
-//import java.util.*;
-//
-//import static org.junit.jupiter.api.Assertions.*;
-//import static org.mockito.Mockito.*;
-//
-//@ExtendWith(MockitoExtension.class)
-//public class ProductServiceImplTest {
-//
-//    @Mock
-//    private ProductRepository productRepository;
-//
-//    @Mock
-//    private EntityMapper entityMapper;
-//
-//    @InjectMocks
-//    private ProductServiceImpl productService;
-//
-//    @Test
-//    void testCreateProduct() {
-//        ProductDto productDto = new ProductDto(
-//                1L, "Test Product", "Test Description", new BigDecimal("100.00")
-//        );
-//
-//        Product product = new Product(
-//                1L, "Test Product", new BigDecimal("100.00"), "Test Description"
-//        );
-//
-////        when(entityMapper.toProduct(productDto)).thenReturn(product);
-////        when(productRepository.save(product)).thenReturn(product);
-////        when(entityMapper.toProductDto(product)).thenReturn(productDto);
-////
-////        ProductDto result = productService.createProduct(productDto);
-////
-////        assertNotNull(result);
-////        assertEquals(productDto.getId(), result.getId());
-////        assertEquals(productDto.getName(), result.getName());
-////        assertEquals(productDto.getDescription(), result.getDescription());
-////        assertEquals(productDto.getPrice(), result.getPrice());
-////        verify(productRepository).save(product);
-//
-//        when(entityMapper.toProduct(productDto)).thenReturn(product);
-//        when(productRepository.save(product)).thenReturn(product);
-//        when(entityMapper.toProductDto(product)).thenReturn(productDto);
-//
-//        ProductDto resultProduct = productService.createProduct(productDto);
-//
-//        assertNotNull(resultProduct);
-//        assertEquals(productDto.getId(), resultProduct.getId());
-//        assertEquals(productDto.getName(), resultProduct.getName());
-//        assertEquals(productDto.getDescription(), resultProduct.getDescription());
-//        assertEquals(productDto.getPrice(), resultProduct.getPrice());
-//        verify(productRepository).save(product);
-//
-//    }
-//
-//    @Test
-//    void testGetProduct_WhenFound() {
-//        Product product = new Product(
-//                1L, "Test Product", new BigDecimal("150.00"), "Test Description"
-//        );
-//
-//        ProductDto productDto = new ProductDto(
-//                1L, "Test Product", "Test Description", new BigDecimal("150.00")
-//        );
-//
-////        when(productRepository.findById(1L)).thenReturn(Optional.of(product));
-////        when(entityMapper.toProductDto(product)).thenReturn(productDto);
-////
-////        ProductDto result = productService.getProduct(1L);
-////
-////        assertNotNull(result);
-////        assertEquals(productDto.getId(), result.getId());
-////        assertEquals(productDto.getName(), result.getName());
-////        assertEquals(productDto.getDescription(), result.getDescription());
-////        assertEquals(productDto.getPrice(), result.getPrice());
-//
-//
-//        when(productRepository.findById(product.getId())).thenReturn(Optional.of(product));
-//        when(entityMapper.toProductDto(product)).thenReturn(productDto);
-//        ProductDto resultProduct = productService.getProduct(product.getId());
-//        assertNotNull(resultProduct);
-//        assertEquals(productDto.getId(), resultProduct.getId());
-//        assertEquals(productDto.getName(), resultProduct.getName());
-//        assertEquals(productDto.getDescription(), resultProduct.getDescription());
-//        assertEquals(productDto.getPrice(), resultProduct.getPrice());
-////        verify(productRepository).findById(product.getId());
-//    }
-//
-//    @Test
-//    void testGetProduct_WhenNotFound() {
-//        when(productRepository.findById(1L)).thenReturn(Optional.empty());
-//        assertThrows(ProductException.class, ()->productService.getProduct(1L));
-//    }
-//
-//    @Test
-//    void testGetProducts() {
-//        List<Product> products = Arrays.asList(
-//                new Product(1L, "Product 1", new BigDecimal("50.00"), "Desc 1"),
-//                new Product(2L, "Product 2", new BigDecimal("60.00"), "Desc 2")
-//        );
-//
-//        List<ProductDto> productDtos = Arrays.asList(
-//                new ProductDto(1L, "Product 1", "Desc 1", new BigDecimal("50.00")),
-//                new ProductDto(2L, "Product 2", "Desc 2", new BigDecimal("60.00"))
-//        );
-//
-//       when(productRepository.findAll()).thenReturn(products);
-//       when(entityMapper.toProductDtoList(products)).thenReturn(productDtos);
-//       List<ProductDto> resultProducts = productService.getProducts();
-//       assertNotNull(resultProducts);
-//       assertEquals(productDtos.size(), resultProducts.size());
-//       assertEquals(productDtos, resultProducts);
-//    }
-//
-//    @Test
-//    void testUpdateProduct_WhenFound() {
-//        ProductDto productDto = new ProductDto(
-//                1L, "Updated Product", "Updated Description", new BigDecimal("200.00")
-//        );
-//
-//        Product existingProduct = new Product(
-//                1L, "Old Product", new BigDecimal("100.00"), "Old Description"
-//        );
-//
-//
-//        when(productRepository.findById(productDto.getId())).thenReturn(Optional.of(existingProduct));
-//        doNothing().when(entityMapper).updateProduct(productDto, existingProduct);
-//        when(productRepository.save(existingProduct)).thenReturn(existingProduct);
-//        when(entityMapper.toProductDto(existingProduct)).thenReturn(productDto);
-//
-//        String updateProductResult = productService.updateProduct(productDto);
-//
-//        assertNotNull(updateProductResult);
-//        assertEquals("Product updated", updateProductResult);
-//        verify(productRepository).save(existingProduct);
-//
-//    }
-//
-//    @Test
-//    void testUpdateProduct_WhenNotFound() {
-//        ProductDto productDto = new ProductDto(
-//                1L, "Updated Product", "Updated Description", new BigDecimal("200.00")
-//        );
-//
-//        when(productRepository.findById(1L)).thenReturn(Optional.empty());
-//
-//        assertThrows(ProductException.class, () -> productService.updateProduct(productDto));
-//    }
-//
-//    @Test
-//    void testDeleteProduct_WhenFound() {
-//        Product product = new Product(
-//                1L, "Product to delete", new BigDecimal("70.00"), "Description"
-//        );
-//
-//       when(productRepository.findById(product.getId())).thenReturn(Optional.of(product));
-//       doNothing().when(productRepository).delete(product);
-//
-//       String deleteProductResult = productService.deleteProduct(product.getId());
-//       assertNotNull(deleteProductResult);
-//       assertEquals("Product deleted", deleteProductResult);
-//       verify(productRepository).delete(product);
-//
-//
-//    }
-//
-//    @Test
-//    void testDeleteProduct_WhenNotFound() {
-//        when(productRepository.findById(1L)).thenReturn(Optional.empty());
-//        assertThrows(ProductException.class, () -> productService.deleteProduct(1L));
-//    }
-//}
+package com.example.themisproductmanagment;
+
+
+import com.example.themisproductmanagment.dto.ProductDto;
+import com.example.themisproductmanagment.entity.Product;
+import com.example.themisproductmanagment.entity.User;
+import com.example.themisproductmanagment.exception.ProductException;
+import com.example.themisproductmanagment.mapper.ProductMapper;
+import com.example.themisproductmanagment.repository.ProductRepository;
+import com.example.themisproductmanagment.repository.UserRepository;
+import com.example.themisproductmanagment.service.serviceImpl.ProductServiceImpl;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.*;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.math.BigDecimal;
+import java.util.*;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+
+@ExtendWith(MockitoExtension.class)
+public class ProductServiceImplTest {
+
+
+    @Mock
+    private ProductMapper productMapper;
+
+    @Mock
+    private UserRepository userRepository;
+
+
+    @Mock
+    private ProductRepository productRepository;
+
+
+
+    @InjectMocks
+    private ProductServiceImpl productService;
+
+    @Test
+    void testCreateProduct() {
+
+        User user = new User();
+        user.setId(1L);
+        user.setName("Akif");
+
+        ProductDto enterProductDto = new ProductDto(
+                1L, "Test Product", new BigDecimal("100.00"), "Test Description", user
+        );
+
+        Product productEntity = new Product(
+                1L, "Test Product", new BigDecimal("100.00"), "Test Description", user
+        );
+
+        Product saveProduct = new Product(
+                1L, "Test Product", new BigDecimal("100.00"), "Test Description", user
+        );
+
+        ProductDto productDtoExpected = new ProductDto(
+                1L, "Test Product", new BigDecimal("100.00"), "Test Description", user
+        );
+
+
+        when(userRepository.findById(1L)).thenReturn(Optional.of(user));
+       when(productMapper.toProduct(enterProductDto)).thenReturn(productEntity);
+       when(productRepository.save(productEntity)).thenReturn(saveProduct);
+       when(productMapper.toProductDto(saveProduct)).thenReturn(productDtoExpected);
+
+       ProductDto returnedProductDto = productService.createProduct(enterProductDto);
+
+       assertNotNull(returnedProductDto);
+       assertEquals(returnedProductDto.getId(), productDtoExpected.getId());
+       assertEquals(returnedProductDto.getName(), productDtoExpected.getName());
+       assertEquals(returnedProductDto.getDescription(), productDtoExpected.getDescription());
+       assertEquals(returnedProductDto.getPrice(), productDtoExpected.getPrice());
+       assertEquals(returnedProductDto.getUser().getId(), user.getId());
+
+       verify(productRepository).save(productEntity);
+       verify(productMapper).toProductDto(saveProduct);
+    }
+
+    @Test
+    void testGetProduct_Found() {
+        User user = new User();
+        user.setId(1L);
+        user.setName("Akif");
+
+
+        Product productEntity = new Product(
+                1L, "Test Product", new BigDecimal("100.00"), "Test Description", user
+        );
+
+        ProductDto productDtoExpected = new ProductDto(
+                1L, "Test Product", new BigDecimal("100.00"), "Test Description", user
+        );
+
+
+        when(productRepository.findById(1L)).thenReturn(Optional.of(productEntity));
+        when(productMapper.toProductDto(productEntity)).thenReturn(productDtoExpected);
+
+
+        ProductDto returnedProductDto = productService.getProduct(1L);
+
+
+        assertEquals(returnedProductDto.getId(), productDtoExpected.getId());
+        assertEquals(returnedProductDto.getName(), productDtoExpected.getName());
+        assertEquals(returnedProductDto.getDescription(), productDtoExpected.getDescription());
+        assertEquals(returnedProductDto.getPrice(), productDtoExpected.getPrice());
+        assertEquals(returnedProductDto.getUser().getId(), user.getId());
+
+        verify(productRepository).findById(1L);
+
+        verify(productMapper).toProductDto(productEntity);
+
+
+    }
+
+
+
+
+
+@Test
+    void testGetAllProducts_Found() {
+        User user = new User();
+        user.setId(1L);
+        user.setName("Akif");
+
+        List<Product> productEntity = Arrays.asList(
+                new Product(
+                        1L, "Test Product", new BigDecimal("100.00"), "Test Description", user
+                ),
+                new Product(
+                        2L, "Test Product", new BigDecimal("100.00"), "Test Description", user
+                )
+        );
+
+        List<ProductDto> productDtoExpected = Arrays.asList(
+                new ProductDto(
+                        1L, "Test Product", new BigDecimal("100.00"), "Test Description", user
+                ),
+                new ProductDto(
+                        2L, "Test Product", new BigDecimal("100.00"), "Test Description", user
+                )
+        );
+
+        when(productRepository.findAll()).thenReturn(productEntity);
+        when(productMapper.toProductDtoList(productEntity)).thenReturn(productDtoExpected);
+
+        List<ProductDto> productDtoList = productService.getProducts();
+        assertNotNull(productDtoList);
+        assertEquals(productDtoExpected.size(), productDtoList.size());
+        assertEquals(productDtoExpected.get(0), productDtoList.get(0));
+        assertEquals(productDtoExpected.get(1), productDtoList.get(1));
+
+        verify(productRepository).findAll();
+
+
+
+
+
+    }
+
+
+
+
+
+
+    @Test
+    void testUpdateProduct_WhenFound() {
+
+        User user = new User();
+        user.setId(1L);
+        user.setName("Akif");
+
+        ProductDto productDtoInput = new ProductDto(
+                1L, "Test Product", new BigDecimal("100.00"), "Test Description", user
+        );
+
+
+        Product productEntityFind = new Product(
+                1L, "Test Product", new BigDecimal("100.00"), "Test Description", user
+        );
+
+        Product productEntityUpdate = new Product(
+                1L, "Test Product", new BigDecimal("100.00"), "Test Description", user
+        );
+
+
+        Product productEntitySaved = new Product(
+                1L, "Test Product", new BigDecimal("100.00"), "Test Description", user
+        );
+
+
+
+        ProductDto productDtoExpected = new ProductDto(
+                1L, "Test Product", new BigDecimal("100.00"), "Test Description", user
+        );
+
+
+when(productRepository.findById(1L)).thenReturn(Optional.of(productEntityFind));
+        productMapper.updateProduct(productDtoInput, productEntityUpdate);
+        when(productRepository.save(productEntityUpdate)).thenReturn(productEntitySaved);
+        when(productMapper.toProductDto(productEntitySaved)).thenReturn(productDtoExpected);
+
+        ProductDto returnedProductDto = productService.updateProduct(productDtoInput);
+
+        assertEquals(productDtoInput.getName(), returnedProductDto.getName());
+        assertEquals(productDtoInput.getDescription(), returnedProductDto.getDescription());
+        assertEquals(productDtoInput.getPrice(), returnedProductDto.getPrice());
+        assertEquals(productDtoInput.getUser().getId(), returnedProductDto.getUser().getId());
+
+
+
+//        verify(productMapper).updateProduct(productDtoInput, productEntityUpdate);--(Did not work)
+        verify(productRepository).save(productEntityUpdate);
+        verify(productMapper).toProductDto(productEntitySaved);
+
+
+
+
+    }
+
+
+
+
+    @Test
+    void testDeleteProduct_WhenFound() {
+        User user = new User();
+        user.setId(1L);
+        user.setName("Akif");
+
+        Product findProduct = new Product(1L, "Product to delete", new BigDecimal("70.00"), "Description", user);
+
+        when(productRepository.findById(1L)).thenReturn(Optional.of(findProduct));
+        doNothing().when(productRepository).delete(findProduct);
+
+        var result = productService.deleteProduct(findProduct.getId());
+
+        assertEquals("Product deleted", result);
+        verify(productRepository).delete(findProduct);
+    }
+
+
+    @Test
+    void testDeleteProduct_WhenNotFound() {
+        when(productRepository.findById(1L)).thenReturn(Optional.empty());
+        assertThrows(ProductException.class, () -> productService.deleteProduct(1L));
+    }
+
+    @Test
+    void testGetProduct_NotFound() {
+        when(productRepository.findById(1L)).thenReturn(Optional.empty());
+        assertThrows(ProductException.class, ()->productService.getProduct(1L));
+    }}
+

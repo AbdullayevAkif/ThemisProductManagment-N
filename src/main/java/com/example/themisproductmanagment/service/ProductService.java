@@ -9,7 +9,7 @@ public interface ProductService {
     ProductDto getProduct(Long id);
     List<ProductDto> getProducts();
     ProductDto createProduct(ProductDto productDto);
-    String updateProduct(ProductDto productDto);
+    ProductDto updateProduct(ProductDto productDto);
     String deleteProduct(Long id );
 
 }

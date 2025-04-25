@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -14,6 +15,7 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(name = "users")
 public class User {
 
     @Id
@@ -22,6 +24,6 @@ public class User {
     String name;
 
     @OneToMany(mappedBy = "user" ,cascade = CascadeType.ALL)
-    List<Product> products;
+    List<Product> products=new ArrayList<>();
 
 }
